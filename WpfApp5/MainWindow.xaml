@@ -1,0 +1,79 @@
+﻿<Window x:Class="WpfApp5.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp5"
+        mc:Ignorable="d"
+        Title="No Title" Height="532.943" Width="651.516" Closing="Window_Closing"
+        ResizeMode="CanMinimize">
+    <Grid>
+
+        <TabControl HorizontalAlignment="Left" Height="323" Margin="10,10,0,0" VerticalAlignment="Top" Width="610"  FontSize="15">
+            <TabItem Header="Macro #" Width="80">
+                <Grid Background="AliceBlue">
+                    <!--_Copy0-->
+                    <ComboBox Tag="ComboBox_KeyList" x:Name="ComboBox_KeyList" HorizontalAlignment="Left" Margin="63,40,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_KeyList_SelectionChanged" DropDownOpened="ComboBox_KeyList_DropDownOpened"/>
+                    <TextBox Tag="TextBox_ms" x:Name="TextBox_ms" HorizontalAlignment="Left" Height="26" Margin="188,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" FontSize="15" PreviewTextInput="TextBox_ms_PreviewTextInput" TextChanged="TextBox_ms_TextChanged"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="322,40,0,0" TextWrapping="Wrap" FontSize="15" VerticalAlignment="Top"><Run Text="ms"/><LineBreak/><Run/></TextBlock>
+                    <ComboBox Tag="ComboBox_SSkey" x:Name="ComboBox_SSkey" HorizontalAlignment="Left" Margin="347,40,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SSkey_SelectionChanged" DropDownOpened="ComboBox_SSkey_DropDownOpened_1" />
+                    <TextBlock HorizontalAlignment="Left" Margin="89,15,0,0" TextWrapping="Wrap" Text="Macro Key" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="218,15,0,0" TextWrapping="Wrap" Text="Timer" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="361,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="Start/Stop key"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="492,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="84" Text="Process ID"/>
+                    <ComboBox HorizontalAlignment="Left" Margin="472,40,0,0" VerticalAlignment="Top" Width="120" />
+                    <Rectangle Tag="Retangle_Status" x:Name="Rectangle_Status" Fill="#FFE60000" HorizontalAlignment="Left" Height="26" Margin="10,40,0,0" Stroke="White" VerticalAlignment="Top" Width="29"/>
+                    <ComboBox Tag="ComboBox_Procid" x:Name="ComboBox_Procid" HorizontalAlignment="Left" Margin="472,40,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_Procid_SelectionChanged" DropDownOpened="ComboBox_Procid_DropDownOpened" />
+                    <Button x:Name="Button_ProcidUpdate" Content="Update Proccess ID " HorizontalAlignment="Left" Margin="440,257,0,0" VerticalAlignment="Top" Width="152" Click="Button_ProcidUpdate_Click"/>
+                    <ComboBox Tag="ComboBox_KeyList" x:Name="ComboBox_KeyList2" HorizontalAlignment="Left" Margin="63,83,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_KeyList_SelectionChanged" DropDownOpened="ComboBox_KeyList_DropDownOpened"/>
+                    <TextBox Tag="TextBox_ms" x:Name="TextBox_ms2" HorizontalAlignment="Left" Height="26" Margin="188,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" FontSize="15" PreviewTextInput="TextBox_ms_PreviewTextInput" TextChanged="TextBox_ms_TextChanged"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="322,83,0,0" TextWrapping="Wrap" FontSize="15" VerticalAlignment="Top"><Run Text="ms"/><LineBreak/><Run/></TextBlock>
+                    <ComboBox Tag="ComboBox_SSkey" x:Name="ComboBox_SSkey2" HorizontalAlignment="Left" Margin="347,83,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SSkey_SelectionChanged" DropDownOpened="ComboBox_SSkey_DropDownOpened_1" />
+                    <Rectangle Tag="Retangle_Status" x:Name="Rectangle_Status2" Fill="#FFE60000" HorizontalAlignment="Left" Height="26" Margin="10,83,0,0" Stroke="White" VerticalAlignment="Top" Width="29"/>
+                    <ComboBox Tag="ComboBox_Procid" x:Name="ComboBox_Procid2" HorizontalAlignment="Left" Margin="472,83,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_Procid_SelectionChanged" DropDownOpened="ComboBox_Procid_DropDownOpened" />
+                    <ComboBox Tag="ComboBox_KeyList" x:Name="ComboBox_KeyList3" HorizontalAlignment="Left" Margin="63,126,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_KeyList_SelectionChanged" DropDownOpened="ComboBox_KeyList_DropDownOpened"/>
+                    <TextBox Tag="TextBox_ms" x:Name="TextBox_ms3" HorizontalAlignment="Left" Height="26" Margin="188,126,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" FontSize="15" PreviewTextInput="TextBox_ms_PreviewTextInput" TextChanged="TextBox_ms_TextChanged"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="322,126,0,0" TextWrapping="Wrap" FontSize="15" VerticalAlignment="Top"><Run Text="ms"/><LineBreak/><Run/></TextBlock>
+                    <ComboBox Tag="ComboBox_SSkey" x:Name="ComboBox_SSkey3" HorizontalAlignment="Left" Margin="347,126,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SSkey_SelectionChanged" DropDownOpened="ComboBox_SSkey_DropDownOpened_1" />
+                    <Rectangle Tag="Retangle_Status" x:Name="Rectangle_Status3" Fill="#FFE60000" HorizontalAlignment="Left" Height="26" Margin="10,126,0,0" Stroke="White" VerticalAlignment="Top" Width="29"/>
+                    <ComboBox Tag="ComboBox_Procid" x:Name="ComboBox_Procid3" HorizontalAlignment="Left" Margin="472,126,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_Procid_SelectionChanged" DropDownOpened="ComboBox_Procid_DropDownOpened" />
+                    <ComboBox Tag="ComboBox_KeyList" x:Name="ComboBox_KeyList4" HorizontalAlignment="Left" Margin="63,169,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_KeyList_SelectionChanged" DropDownOpened="ComboBox_KeyList_DropDownOpened"/>
+                    <TextBox Tag="TextBox_ms" x:Name="TextBox_ms4" HorizontalAlignment="Left" Height="26" Margin="188,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" FontSize="15" PreviewTextInput="TextBox_ms_PreviewTextInput" TextChanged="TextBox_ms_TextChanged"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="322,172,0,0" TextWrapping="Wrap" FontSize="15" VerticalAlignment="Top"><Run Text="ms"/><LineBreak/><Run/></TextBlock>
+                    <ComboBox Tag="ComboBox_SSkey" x:Name="ComboBox_SSkey4" HorizontalAlignment="Left" Margin="347,169,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SSkey_SelectionChanged" DropDownOpened="ComboBox_SSkey_DropDownOpened_1" />
+                    <Rectangle Tag="Retangle_Status" x:Name="Rectangle_Status4" Fill="#FFE60000" HorizontalAlignment="Left" Height="26" Margin="10,169,0,0" Stroke="White" VerticalAlignment="Top" Width="29"/>
+                    <ComboBox Tag="ComboBox_Procid" x:Name="ComboBox_Procid4" HorizontalAlignment="Left" Margin="472,169,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_Procid_SelectionChanged" DropDownOpened="ComboBox_Procid_DropDownOpened" />
+                    <Button x:Name="Button_ChangeTitle" Content="Change Title" HorizontalAlignment="Left" Margin="283,257,0,0" VerticalAlignment="Top" Width="152" Click="Button_ChangeTitle_Click" />
+                    <Button x:Name="Button_Info" Content="Information" HorizontalAlignment="Left" Margin="120,257,0,0" VerticalAlignment="Top" Width="158" Click="Button_Info_Click" Opacity="0.2"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Handling #"  Width="125">
+                <Grid Background="AliceBlue">
+                    <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="193"><Run Text="Process Detect"/><Run Text="ing"/><Run Text=" Status"/><Run Text=" :"/></TextBlock>
+                    <TextBlock x:Name="Handling_TextBlock_DetectStatus" HorizontalAlignment="Left" Margin="194,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="145"/>
+                    <TextBlock x:Name="Handling_TextBlock_XPos" HorizontalAlignment="Left" Margin="411,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170" Text="Position X : "/>
+                    <TextBlock x:Name="Handling_TextBlock_ProcessName" HorizontalAlignment="Left" Margin="10,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="396"><Run Text="Process"/><Run Text=" "/><Run Text="Name : "/></TextBlock>
+                    <TextBlock x:Name="Handling_TextBlock_ProcessID" HorizontalAlignment="Left" Margin="10,133,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="329"><Run Text="Process"/><Run Text=" ID"/><Run Text=" : "/></TextBlock>
+                    <Button x:Name="Handling_Button_Start" Content="Detect Start" HorizontalAlignment="Left" Margin="466,257,0,0" VerticalAlignment="Top" Width="128" Click="Handling_Button_Start_Click"/>
+                    <Button x:Name="Handling_Button_Kill" Content="Kill Process" HorizontalAlignment="Left" Margin="10,228,0,0" VerticalAlignment="Top" Width="128" IsEnabled="False" Click="Handling_Button_Kill_Click"/>
+                    <Button x:Name="Handling_Button_Suspend" Content="Suspend Process" HorizontalAlignment="Left" Margin="143,228,0,0" VerticalAlignment="Top" IsEnabled="False" Width="128" RenderTransformOrigin="1.372,-0.375" Click="Handling_Button_Suspend_Click"/>
+                    <Button x:Name="Handling_Button_ChangeTitle" Content="Change Title" HorizontalAlignment="Left" Margin="10,257,0,0" VerticalAlignment="Top" IsEnabled="False" Width="128" Click="Handling_Button_ChangeTitle_Click"/>
+                    <Button x:Name="Handling_Button_PositionLock" Content="" HorizontalAlignment="Left" Margin="143,257,0,0" VerticalAlignment="Top" IsEnabled="False" Width="128"/>
+                    <TextBlock x:Name="Handling_TextBlock_YPos" HorizontalAlignment="Left" Margin="411,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170"><Run Text="Position "/><Run Text="Y"/><Run Text=" : "/></TextBlock>
+                    <TextBlock x:Name="Handling_TextBlock_MainModuleName" HorizontalAlignment="Left" Margin="10,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="396"><Run Text="Process"/><Run Text=" "/><Run Text="MainModule"/><Run Text="Name : "/></TextBlock>
+                    <TextBlock HorizontalAlignment="Left" Margin="448,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="146" Foreground="#FF979797"/>
+                    <TextBlock x:Name="Handling_TextBlock_Helper" HorizontalAlignment="Left" Margin="291,209,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="303" Foreground="#FF979797" Height="43"><Run Text="Click the process with the information you want to get"/><Run Text=" and "/><Run Text="p"/><Run Text="ress '"/><Run Text="F10"/><Run Text="' key "/><Run Text="to lock"/><LineBreak/><Run/></TextBlock>
+                    <TextBlock x:Name="Handling_TextBlock_ProcessTitleName" HorizontalAlignment="Left" Margin="10,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="584"><Run Text="Process"/><Run Text=" "/><Run Text="Title : "/></TextBlock>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+        <TextBlock TextWrapping="Wrap" Margin="231,10,301,467" FontSize="15"><Run Text="MapleStroy"/><Run Text=" "/><Run Text=": "/></TextBlock>
+        <TextBlock x:Name="TextBlock_MapleCount" TextWrapping="Wrap" Margin="326,10,139,467" FontSize="15" RenderTransformOrigin="0.474,0.429" Foreground="#FF4CD100"><Run Text="1 "/><Run Text="Activating"/></TextBlock>
+        <TextBlock TextWrapping="Wrap" Margin="411,10,112,467" FontSize="15"><Run Text="Foreground"/><Run Text=" : "/></TextBlock>
+        <TextBlock  x:Name="TextBlock_MapleForeground" TextWrapping="Wrap" Margin="512,10,0,467" FontSize="15" RenderTransformOrigin="1.503,0.515" Foreground="#FF4CD100" Text="4312"/>
+        <ListView x:Name="ListView_Log" HorizontalAlignment="Left" Height="140" Margin="10,338,0,0" VerticalAlignment="Top" Width="610">
+        </ListView>
+
+    </Grid>
+</Window>
