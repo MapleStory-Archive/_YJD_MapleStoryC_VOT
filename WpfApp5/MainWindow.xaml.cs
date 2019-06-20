@@ -4,6 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Security.Principal;
 using System.IO;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WpfApp5
 {
@@ -24,6 +27,7 @@ namespace WpfApp5
             TitleGet();
             InitializePbotComponent();
             InitializeHandlingComponent();
+            LoadSettings();
             window = this;
         }
 
@@ -57,7 +61,7 @@ namespace WpfApp5
         private void PriviliegeChecking()
         {
             bool isElevated = false;
-            using ( WindowsIdentity identity = WindowsIdentity.GetCurrent() )
+            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
             {
                 WindowsPrincipal principal = new WindowsPrincipal(identity);
                 isElevated = principal.IsInRole(WindowsBuiltInRole.Administrator);
@@ -83,19 +87,110 @@ namespace WpfApp5
         {
             try
             {
+                
                 for (int i=0 ; i< Pbot_macroList.Count ; i++ )
                 {
                     if ( Pbot_macroList[i].KeyThread != null)
                         Pbot_macroList[i].KeyThread.Abort();
                 }
                 maple_cThread.Abort();
-                detect_pThread.Abort();
-                detect_cThread.Abort();
                 for (int i=0 ; i< Pbot_HotkeyList.Count ; i++ )
                     Pbot_HotkeyList[i].Unregister();
                 Handling_hotkey.Unregister();
+                SaveSettings();
+                detect_pThread.Abort();
+                detect_cThread.Abort();
+
             }
             catch { }
+        }
+
+        private void LoadSettings()
+        {
+            if (File.Exists("setting.json") /*&& MessageBox.Show("저장된 데이터가 있습니다.\n불러오시겠습니까?", "", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes*/)
+            {
+                try
+                {
+                    JObject root = JObject.Parse(File.ReadAllText("setting.json"));
+                    JArray macroArray = root["macroarray"] as JArray;
+
+                    for (int i = 0; i < macroArray.Count; i++)
+                    {
+                        JObject macroObject = macroArray[i] as JObject;
+                        Pbot_ComboBoxlist_macrokey[i].SelectedIndex = int.Parse(macroObject["mk"].ToString());
+                        Pbot_Textboxlist_ms[i].Text = macroObject["ms"].ToString();
+                        Pbot_ComboBoxlist_ss[i].SelectedIndex = int.Parse(macroObject["ssk"].ToString());
+                    }
+
+                    Pbot_ComboBox_ProcidUpdate();
+                    LoadMapleProcess();
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show("저장된 데이터를 불러오는데 실패하였습니다", "", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
+                }
+            }
+        }
+
+        private void LoadMapleProcess()
+        {
+            
+            var list = Pbot_GetMaplestroyProcs();
+            list.Sort((proc1, proc2) =>  proc1.StartTime.CompareTo(proc2.StartTime));
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (i > 4) continue;
+
+                if (Pbot_ComboBoxlist_id[i].Items.Count > 1)
+                {
+                    for (int j = 1; j < Pbot_ComboBoxlist_id[i].Items.Count; j++)
+                    {
+                        if (Pbot_ComboBoxlist_id[i].Items[j].ToString() == list[i].Id.ToString())
+                        {
+                            Pbot_ComboBoxlist_id[i].SelectedIndex = i + 1;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void SaveSettings()
+        {
+            List<bool> setMacroList = new List<bool>() { false, false, false, false };
+            for (int i = 0; i < 4; i++)
+            {
+                if (Pbot_ComboBoxlist_ss[i].SelectedIndex == 0 || Pbot_ComboBoxlist_ss[i].SelectedIndex == -1)
+                    continue;
+                if (Pbot_ComboBoxlist_macrokey[i].SelectedIndex == 0 || Pbot_ComboBoxlist_macrokey[i].SelectedIndex == -1)
+                    continue;
+
+                int.TryParse(Pbot_Textboxlist_ms[i].Text.ToString(), out int ret);
+
+                if (ret <= 0)
+                    continue;
+
+                setMacroList[i] = true;
+            }
+
+            if (setMacroList.Find(x => x == true) == false) //세팅된 저장값이 발견되지 않을 경우
+                return;
+
+            JObject root = new JObject();
+            JArray macroArray = new JArray();
+            for (int i = 0; i < setMacroList.Count; i++)
+            {
+                JObject macroObject = new JObject();
+                
+                macroObject.Add("mk", Pbot_ComboBoxlist_macrokey[i].SelectedIndex);
+                int.TryParse(Pbot_Textboxlist_ms[i].Text.ToString(), out int ret);
+                macroObject.Add("ms", ret);
+                macroObject.Add("ssk", Pbot_ComboBoxlist_ss[i].SelectedIndex);
+                macroArray.Add(macroObject);
+            }
+            root.Add("macroarray", macroArray);
+            File.WriteAllText("setting.json", root.ToString());
         }
 
         #region 로그

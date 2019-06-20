@@ -30,7 +30,7 @@ namespace WpfApp5
         {
             public int Delay { get; set; }
             public Thread KeyThread { get; set; }
-            public Key Macrokey { get; set; }
+            public VKeys Macrokey { get; set; }
             public Key SSkey { get; set; }
             public Process proc { get; set; }
             public bool IsWorking { get; set; }
@@ -59,8 +59,9 @@ namespace WpfApp5
             }
             Pbot_StartMapleCheckThread();
             Pbot_ComboBoxInitialize();
+            
             for (int i=0 ; i < 9 ; i++ )
-                Pbot_HotkeyList.Add(new HotKey((Key)(90 + i), KeyModifier.None, OnHotKeyHandler));
+                Pbot_HotkeyList.Add(new HotKey((Key)(Key.F1 + i), KeyModifier.None, OnHotKeyHandler));
         }
 
         private void OnHotKeyHandler(HotKey obj)
@@ -70,7 +71,7 @@ namespace WpfApp5
                 for (int i=0 ; i< Pbot_macroList.Count ; i++ )
                 {
                     
-                    if ( Pbot_macroList[i].Macrokey == Key.None ) continue;
+                    if ( Pbot_macroList[i].Macrokey == VKeys.None ) continue;
                     if ( Pbot_macroList[i].SSkey == Key.None ) { WriteLog("Start/Stop key not selected", i + 1); continue; }
                     if ( Pbot_macroList[i].proc == null ) { WriteLog("Process not found", i + 1); continue; }
                     if ( Pbot_macroList[i].Delay < 10 ) { WriteLog("Delay should be at least 10 ms", i+1); continue; }
@@ -78,61 +79,61 @@ namespace WpfApp5
                     if ( Pbot_macroList[i].SSkey == obj.Key )
                     {
                         if ( Pbot_macroList[i].IsWorking )
-                        {
-                            Pbot_macroList[i].IsWorking = false;
-                            WriteLog("Pause", i + 1);
-                            if ( Pbot_macroList[i].KeyThread != null)
-                                Pbot_macroList[i].KeyThread.Abort();
-                            Pbot_Rectanglelist[i].Fill = new SolidColorBrush(Color.FromRgb(230, 0, 0));
-                        }
+                            StopMacro(i);
                         else
-                        {
-                            Pbot_macroList[i].IsWorking = true;
-                            WriteLog("Start", i+1);
-
-                            Action<int> action = new Action<int>((ind) =>
-                            {
-                                try
-                                {
-                                    var handle = Pbot_macroList[ind].proc.MainWindowHandle;
-                                    while ( true )
-                                    {
-                                        VKeys key = GetVkKey(Pbot_macroList[ind].Macrokey);
-                                        Import.PostMessage(handle, (int)WMessages.WM_KEYDOWN, (int)key, new IntPtr( Import.MapVirtualKey(( int )key, 0) << 16));
-                                        Import.PostMessage(handle, (int)WMessages.WM_KEYUP,   (int)key, new IntPtr( Import.MapVirtualKey(( int )key, 0) << 16));
-                                        Thread.Sleep(Pbot_macroList[ind].Delay);
-                                    }
-                                }
-                                catch ( Exception excep ) { /*WriteLog("쓰레드 오류발생 " + excep.Message, i + 1);*/ }
-                            });
-                            Action<int> StartMacro = new Action<int>((ind) =>
-                            {
-                                Pbot_macroList[ind].KeyThread = new Thread(() => action(ind));
-                                Pbot_macroList[ind].KeyThread.Start();
-                            });
                             StartMacro(i);
-                            Pbot_Rectanglelist[i].Fill = new SolidColorBrush(Color.FromRgb(0, 230, 0));
-                        }
                     }
                 }
             });
         }
 
-        #region Key <-> VkKey
-        private VKeys GetVkKey(Key macrokey)
+        private void StopMacro(int i)
         {
-            if ( macrokey == Key.LeftCtrl ) return VKeys.VK_CONTROL;
-            else if ( macrokey == Key.Space ) return VKeys.VK_SPACE;
-            else if ( macrokey == Key.Insert ) return VKeys.VK_INSERT;
-            else if ( macrokey == Key.Delete ) return VKeys.VK_DELETE;
-            else if ( macrokey == Key.Home ) return VKeys.VK_HOME;
-            else if ( macrokey == Key.End ) return VKeys.VK_END;
-            else if ( macrokey == Key.PageUp ) return VKeys.VK_PAGEUP;
-            else if ( macrokey == Key.PageDown ) return VKeys.VK_PAGEDOWN;
-            else if ( macrokey >= Key.A && macrokey <= Key.Z) return (VKeys)(macrokey);
-            else return VKeys.NONE;
+            Pbot_macroList[i].IsWorking = false;
+            WriteLog("Pause", i + 1);
+            if (Pbot_macroList[i].KeyThread != null)
+                Pbot_macroList[i].KeyThread.Abort();
+            Pbot_Rectanglelist[i].Fill = new SolidColorBrush(Color.FromRgb(230, 0, 0));
         }
-        #endregion
+
+        private void StartMacro(int i)
+        {
+            Pbot_macroList[i].IsWorking = true;
+            WriteLog("Start", i + 1);
+
+            Action<int> action = new Action<int>((ind) =>
+            {
+                try
+                {
+                    var handle = Pbot_macroList[ind].proc.MainWindowHandle;
+                    while (true)
+                    {
+                        if (Pbot_macroList[ind].Macrokey >= VKeys.ArrowLeft && Pbot_macroList[ind].Macrokey <= VKeys.ArrowDown)
+                        {
+                            Import.PostMessage(handle, (int)WMessages.WM_KEYDOWN, (int)Pbot_macroList[ind].Macrokey, new IntPtr(Import.MapVirtualKey((int)Pbot_macroList[ind].Macrokey, 0) << 16));
+                            Thread.Sleep(Pbot_macroList[ind].Delay);
+                            Import.PostMessage(handle, (int)WMessages.WM_KEYUP, (int)Pbot_macroList[ind].Macrokey, new IntPtr(Import.MapVirtualKey((int)Pbot_macroList[ind].Macrokey, 0) << 16));
+                        }
+                        else
+                        {
+                            Import.PostMessage(handle, (int)WMessages.WM_KEYDOWN, (int)Pbot_macroList[ind].Macrokey, new IntPtr(Import.MapVirtualKey((int)Pbot_macroList[ind].Macrokey, 0) << 16));
+                            Import.PostMessage(handle, (int)WMessages.WM_KEYUP, (int)Pbot_macroList[ind].Macrokey, new IntPtr(Import.MapVirtualKey((int)Pbot_macroList[ind].Macrokey, 0) << 16));
+                            Thread.Sleep(Pbot_macroList[ind].Delay);
+                        }
+                    }
+                }
+                catch (Exception excep) { /*WriteLog("쓰레드 오류발생 " + excep.Message, i + 1);*/ }
+            });
+            Action<int> StartMacro = new Action<int>((ind) =>
+            {
+                Pbot_macroList[ind].KeyThread = new Thread(() => action(ind));
+                Pbot_macroList[ind].KeyThread.Start();
+            });
+            StartMacro(i);
+            Pbot_Rectanglelist[i].Fill = new SolidColorBrush(Color.FromRgb(0, 230, 0));
+        }
+
+
 
         #region 콤보박스 초기화
         private void Pbot_ComboBoxInitialize()
@@ -164,17 +165,23 @@ namespace WpfApp5
 
             for (int i=0 ; i < Pbot_ComboBoxlist_macrokey.Count ; i++ )
             {
-                Pbot_ComboBoxlist_macrokey[i].Items.Add("<Select Key>");
-                Pbot_ComboBoxlist_macrokey[i].Items.Add("Ctrl");
-                Pbot_ComboBoxlist_macrokey[i].Items.Add("Space");
-                Pbot_ComboBoxlist_macrokey[i].Items.Add("Insert");
-                Pbot_ComboBoxlist_macrokey[i].Items.Add("Delete");
-                Pbot_ComboBoxlist_macrokey[i].Items.Add("Home");
-                Pbot_ComboBoxlist_macrokey[i].Items.Add("End");
-                Pbot_ComboBoxlist_macrokey[i].Items.Add("PageUp");
-                Pbot_ComboBoxlist_macrokey[i].Items.Add("PageDown");
-                for (int j=65 ; j <= 90 ; j++ )
-                    Pbot_ComboBoxlist_macrokey[i].Items.Add(((char)j).ToString());
+
+                //Pbot_ComboBoxlist_macrokey[i].Items.Add("Ctrl");
+                //Pbot_ComboBoxlist_macrokey[i].Items.Add("Space");
+                //Pbot_ComboBoxlist_macrokey[i].Items.Add("Insert");
+                //Pbot_ComboBoxlist_macrokey[i].Items.Add("Delete");
+                //Pbot_ComboBoxlist_macrokey[i].Items.Add("Home");
+                //Pbot_ComboBoxlist_macrokey[i].Items.Add("End");
+                //Pbot_ComboBoxlist_macrokey[i].Items.Add("PageUp");
+                //Pbot_ComboBoxlist_macrokey[i].Items.Add("PageDown");
+                //for (int j=65 ; j <= 90 ; j++ )
+                //    Pbot_ComboBoxlist_macrokey[i].Items.Add(((char)j).ToString());
+
+                Enum.GetValues(typeof(VKeys))
+                .Cast<VKeys>()
+                .Select(v => v.ToString())
+                .ToList().
+                ForEach(  x =>  Pbot_ComboBoxlist_macrokey[i].Items.Add(x = x.Replace("_", string.Empty)) );
                 Pbot_ComboBoxlist_macrokey[i].SelectedIndex = 0;
             }
 
@@ -215,20 +222,17 @@ namespace WpfApp5
         #region Process ID 콤보박스 리스트들 업데이트
         private void Pbot_ComboBox_ProcidUpdate()
         {
-            this.Dispatcher.BeginInvoke(new Action(() =>
+            var list = Pbot_GetMaplestroyProcs();
+
+            for (int i = 0; i < Pbot_ComboBoxlist_id.Count; i++)
             {
-                var list = Pbot_GetMaplestroyProcs();
+                Pbot_ComboBoxlist_id[i].Items.Clear();
+                Pbot_ComboBoxlist_id[i].Items.Add("<Select PID>");
+                for (int j = 0; j < list.Count; j++)
+                    Pbot_ComboBoxlist_id[i].Items.Add(list[j].Id.ToString());
 
-                for ( int i = 0 ; i < Pbot_ComboBoxlist_id.Count ; i++ )
-                {
-                    Pbot_ComboBoxlist_id[i].Items.Clear();
-                    Pbot_ComboBoxlist_id[i].Items.Add("<Select PID>");
-                    for (int j =0 ; j<list.Count ; j++ )
-                        Pbot_ComboBoxlist_id[i].Items.Add(list[j].Id.ToString());
-
-                    Pbot_ComboBoxlist_id[i].SelectedIndex = 0;
-                }
-            }));
+                Pbot_ComboBoxlist_id[i].SelectedIndex = 0;
+            }
         }
         #endregion
 
@@ -246,10 +250,10 @@ namespace WpfApp5
             if ( index == -1 ) return;
             if ( tb.SelectedIndex == 0 )
             {
-                Pbot_macroList[index].SSkey =  Key.None;
+                Pbot_macroList[index].SSkey = Key.None;
                 return;
             }
-            Pbot_macroList[index].SSkey = ( Key )(89 + tb.SelectedIndex);
+            Pbot_macroList[index].SSkey = (Key)(Key.F1 - 1 + tb.SelectedIndex);
         }
         #endregion
 
@@ -349,15 +353,16 @@ namespace WpfApp5
                     index = i;
             }
             if ( index == -1 ) return;
-            if ( tb.SelectedIndex == 1 ) Pbot_macroList[index].Macrokey = Key.LeftCtrl;
-            else if ( tb.SelectedIndex == 2) Pbot_macroList[index].Macrokey = Key.Space;
-            else if ( tb.SelectedIndex == 3 ) Pbot_macroList[index].Macrokey = Key.Insert;
-            else if ( tb.SelectedIndex == 4 ) Pbot_macroList[index].Macrokey = Key.Delete;
-            else if ( tb.SelectedIndex == 5 ) Pbot_macroList[index].Macrokey = Key.Home;
-            else if ( tb.SelectedIndex == 6 ) Pbot_macroList[index].Macrokey = Key.End;
-            else if ( tb.SelectedIndex == 7 ) Pbot_macroList[index].Macrokey = Key.PageUp;
-            else if ( tb.SelectedIndex == 8 ) Pbot_macroList[index].Macrokey = Key.PageDown;
-            else if ( tb.SelectedIndex >= 0 + 9 && tb.SelectedIndex <= 25 + 9 ) Pbot_macroList[index].Macrokey = ( Key )(56 + tb.SelectedIndex);
+            if (tb.SelectedIndex == 0) return;
+
+            string keyString = tb.SelectedItem.ToString();
+            char[] keyCharArray = keyString.ToCharArray();
+
+            if (keyCharArray[0] >= 48 && keyCharArray[0] <= 57)
+                keyString = keyString.Insert(0, "_");
+
+            Pbot_macroList[index].Macrokey = (VKeys)Enum.Parse(typeof(VKeys), keyString);
+            int a = 20;
         }
         #endregion
 
