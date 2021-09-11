@@ -49,7 +49,10 @@ namespace WpfApp5
         private bool botStarted = false;
         private int beforeMapleProcessCount = 0;
         private int afterMapleProcessCount = 0;
+        class ff<AAAAAA>
+        {
 
+        }
         private void InitializePbotComponent()
         {
             for ( int i = 0 ; i < MaxMacroCount ; i++ )
@@ -60,8 +63,8 @@ namespace WpfApp5
             Pbot_StartMapleCheckThread();
             Pbot_ComboBoxInitialize();
             
-            for (int i=0 ; i < 9 ; i++ )
-                Pbot_HotkeyList.Add(new HotKey((Key)(Key.F1 + i), KeyModifier.None, OnHotKeyHandler));
+            for (int i=0 ; i < 4 ; i++ )
+                Pbot_HotkeyList.Add(new HotKey((Key)(Key.D1 + i), KeyModifier.None, OnHotKeyHandler));
         }
 
         private void OnHotKeyHandler(HotKey obj)
@@ -188,15 +191,10 @@ namespace WpfApp5
             for ( int i = 0 ; i < Pbot_ComboBoxlist_ss.Count ; i++ )
             {
                 Pbot_ComboBoxlist_ss[i].Items.Add("<Select Key>");
-                Pbot_ComboBoxlist_ss[i].Items.Add("F1");
-                Pbot_ComboBoxlist_ss[i].Items.Add("F2");
-                Pbot_ComboBoxlist_ss[i].Items.Add("F3");
-                Pbot_ComboBoxlist_ss[i].Items.Add("F4");
-                Pbot_ComboBoxlist_ss[i].Items.Add("F5");
-                Pbot_ComboBoxlist_ss[i].Items.Add("F6");
-                Pbot_ComboBoxlist_ss[i].Items.Add("F7");
-                Pbot_ComboBoxlist_ss[i].Items.Add("F8");
-                Pbot_ComboBoxlist_ss[i].Items.Add("F9");
+                Pbot_ComboBoxlist_ss[i].Items.Add("1");
+                Pbot_ComboBoxlist_ss[i].Items.Add("2");
+                Pbot_ComboBoxlist_ss[i].Items.Add("3");
+                Pbot_ComboBoxlist_ss[i].Items.Add("4");
                 Pbot_ComboBoxlist_ss[i].SelectedIndex = 0;
             }
 
@@ -253,7 +251,7 @@ namespace WpfApp5
                 Pbot_macroList[index].SSkey = Key.None;
                 return;
             }
-            Pbot_macroList[index].SSkey = (Key)(Key.F1 - 1 + tb.SelectedIndex);
+            Pbot_macroList[index].SSkey = (Key)(Key.D1 - 1 + tb.SelectedIndex);
         }
         #endregion
 
