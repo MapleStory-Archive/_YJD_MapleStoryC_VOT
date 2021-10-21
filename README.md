@@ -14,3 +14,10 @@
 
 RegisterHotkey 방식에서 Gma Keyboard 훅 방식으로 후킹방식 변경함
 
+
+
+**[추억 회상]**
+
+![](https://i.ibb.co/qg6Spdp/image.png)
+
+ㄷㄷ 19년 5월 27일날 초기버전 만들었었네

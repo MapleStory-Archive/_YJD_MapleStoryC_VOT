@@ -185,10 +185,15 @@ namespace CMapleVot
             for ( int i = 0 ; i < Pbot_ComboBoxlist_ss.Count ; i++ )
             {
                 Pbot_ComboBoxlist_ss[i].Items.Add("<Select Key>");
-                Pbot_ComboBoxlist_ss[i].Items.Add("1");
-                Pbot_ComboBoxlist_ss[i].Items.Add("2");
-                Pbot_ComboBoxlist_ss[i].Items.Add("3");
-                Pbot_ComboBoxlist_ss[i].Items.Add("4");
+                Pbot_ComboBoxlist_ss[i].Items.Add("F1");
+                Pbot_ComboBoxlist_ss[i].Items.Add("F2");
+                Pbot_ComboBoxlist_ss[i].Items.Add("F3");
+                Pbot_ComboBoxlist_ss[i].Items.Add("F4");
+                Pbot_ComboBoxlist_ss[i].Items.Add("F5");
+                Pbot_ComboBoxlist_ss[i].Items.Add("F6");
+                Pbot_ComboBoxlist_ss[i].Items.Add("F7");
+                Pbot_ComboBoxlist_ss[i].Items.Add("F8");
+                Pbot_ComboBoxlist_ss[i].Items.Add("F9");
                 Pbot_ComboBoxlist_ss[i].SelectedIndex = 0;
             }
 
@@ -245,7 +250,7 @@ namespace CMapleVot
                 Pbot_macroList[index].SSkey = Key.None;
                 return;
             }
-            Pbot_macroList[index].SSkey = (Key)(Key.D1 - 1 + tb.SelectedIndex);
+            Pbot_macroList[index].SSkey = (Key)Enum.Parse(typeof(Key), tb.SelectedItem as string);
         }
         #endregion
 

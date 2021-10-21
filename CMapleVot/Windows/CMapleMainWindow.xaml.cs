@@ -17,6 +17,7 @@ namespace CMapleVot
     /// </summary>
     public partial class CMapleMainWindow : Window
     {
+        public static CMapleHotkeyCapture hotkeyCapture = new CMapleHotkeyCapture();
         public static CMapleMainWindow window = null;
         public static CMapleInfoWindow windowInfo = null;
         public static CMapleChangeTitleWindow Pbot_changeTitleWindow = null;
@@ -247,7 +248,7 @@ namespace CMapleVot
         {
             if (hotKey == Key.F10)
                 OnProcessHandlingHotkeyPressed();
-            else
+            else if (hotKey >= Key.F1 && hotKey <= Key.F9)
                 OnVBotHotkeyPressed(hotKey);
         }
     }

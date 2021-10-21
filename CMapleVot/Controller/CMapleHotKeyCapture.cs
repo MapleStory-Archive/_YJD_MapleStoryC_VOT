@@ -24,35 +24,35 @@ namespace CMapleVot
     using System.Threading.Tasks;
     using System.Windows.Forms;
 
-    namespace JJangdoCommander
+    public class CMapleHotkeyCapture
     {
-        public class HotkeyCapture
+        private Thread _hotkeySynchronizer;
+        private object _hotkeySynchronizerLocker = new object();
+        private IKeyboardMouseEvents _globalHook;
+
+        public CMapleHotkeyCapture()
         {
-            private Thread _hotkeySynchronizer;
-            private object _hotkeySynchronizerLocker = new object();
-            private IKeyboardMouseEvents _globalHook;
-
-            public HotkeyCapture()
+            _globalHook = Hook.GlobalEvents();
+            _globalHook.KeyDown += Capture_KeyDown;
+            _hotkeySynchronizer = new Thread(() =>
             {
-                _globalHook = Hook.GlobalEvents();
-                _globalHook.KeyDown += Capture_KeyDown;
-                _hotkeySynchronizer.IsBackground = true;
-                _hotkeySynchronizer.Start();
-            }
+            });
+            _hotkeySynchronizer.IsBackground = true;
+            _hotkeySynchronizer.Start();
+        }
 
-            private void Capture_KeyDown(object sender, KeyEventArgs e)
+        private void Capture_KeyDown(object sender, KeyEventArgs e)
+        {
+            lock (_hotkeySynchronizerLocker)
             {
-                lock (_hotkeySynchronizerLocker)
-                {
-                    CMapleMainWindow.window.OnHotKeyPressed(CMapleExtension.WinformsToWPFKey(e.KeyCode));
-                }
+                CMapleMainWindow.window.OnHotKeyPressed(CMapleExtension.WinformsToWPFKey(e.KeyCode));
             }
+        }
 
-            public void Terminate()
-            {
-                _globalHook.KeyDown -= Capture_KeyDown;
-                _globalHook.Dispose();
-            }
+        public void Terminate()
+        {
+            _globalHook.KeyDown -= Capture_KeyDown;
+            _globalHook.Dispose();
         }
     }
 
